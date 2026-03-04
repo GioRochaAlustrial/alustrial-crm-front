@@ -55,20 +55,32 @@ export default function Topbar() {
   const prevCountRef = useRef(0);
 
   // ✅ Cargar usuario desde cookie `user`
-  useEffect(() => {
-    const raw = getCookie("user");
-    if (!raw) return;
+  console.log("cargar cookie user")
+//   useEffect(() => {
+//  console.log("cargar cookie user2")
+//     const raw = getCookie("user");
+//     console.log('raw')
+//     console.log(raw)
+//     if (!raw) return;
 
-    try {
-      const decoded = decodeURIComponent(raw);
-      const u = JSON.parse(decoded);
-      setUsuario(u);
-    } catch (e) {
-      // Si falla, deja fallback
-      console.log("No pude parsear cookie user:", e);
-    }
-  }, []);
-
+//     try {
+//       const decoded = decodeURIComponent(raw);
+//       const u = JSON.parse(decoded);
+//       setUsuario(u);
+//     } catch (e) {
+//       // Si falla, deja fallback
+//       console.log("No pude parsear cookie user:", e);
+//     }
+//   }, []);
+useEffect(() => {
+    ;(async () => {
+      const res = await fetch("/api/auth/me")
+      if (res.ok) {
+        const data = await res.json()
+        setUsuario(data.usuario)
+      }
+    })()
+  }, [])
   // ✅ Avatar
   const avatarSrc = useMemo(() => {
     if (!usuario?.foto_url) return null;
