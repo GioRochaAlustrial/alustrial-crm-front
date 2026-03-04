@@ -53,66 +53,33 @@
 //   return res
 // }
 // app/api/auth/login/route.js
-// import { NextResponse } from "next/server";
-
-// export async function POST(req) {
-//   const body = await req.json();
-
-//   // 🔹 Llamar al backend
-//   const apiRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
-//     method: "POST",
-//     headers: { "Content-Type": "application/json" },
-//     body: JSON.stringify(body),
-//     credentials: "include",
-//   });
-
-//   const data = await apiRes.json();
-
-//   if (!apiRes.ok) {
-//     return NextResponse.json(data, { status: apiRes.status });
-//   }
-
-//   // 🔹 Crear respuesta local
-//   const res = NextResponse.json({ ok: true, usuario: data.usuario });
-
-//   // 🔹 Copiar cookies del backend al frontend (Render a veces las bloquea)
-//   const setCookieHeader = apiRes.headers.get("set-cookie");
-//   if (setCookieHeader) {
-//     res.headers.set("set-cookie", setCookieHeader);
-//   }
-
-//   return res;
-// }
 import { NextResponse } from "next/server";
 
-export function middleware(req) {
-  const token = req.cookies.get("token")?.value;
-  const path = req.nextUrl.pathname;
+export async function POST(req) {
+  const body = await req.json();
 
-  console.log("🧩 Middleware ejecutado →", path, "| Token:", token ? "✅ Sí hay token" : "❌ No hay token");
+  // 🔹 Llamar al backend
+  const apiRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+    credentials: "include",
+  });
 
-  const isPrivate =
-    path.startsWith("/dashboard") ||
-    path.startsWith("/welcome") ||
-    path.startsWith("/ventas") ||
-    path.startsWith("/citas");
+  const data = await apiRes.json();
 
-  const isLogin = path.startsWith("/login");
-
-  if (isPrivate && !token) {
-    console.log("🚫 Redirigiendo a /login (ruta privada sin token)");
-    return NextResponse.redirect(new URL("/login", req.url));
+  if (!apiRes.ok) {
+    return NextResponse.json(data, { status: apiRes.status });
   }
 
-  if (isLogin && token) {
-    console.log("🔁 Ya tienes token, redirigiendo a /welcome");
-    return NextResponse.redirect(new URL("/welcome", req.url));
+  // 🔹 Crear respuesta local
+  const res = NextResponse.json({ ok: true, usuario: data.usuario });
+
+  // 🔹 Copiar cookies del backend al frontend (Render a veces las bloquea)
+  const setCookieHeader = apiRes.headers.get("set-cookie");
+  if (setCookieHeader) {
+    res.headers.set("set-cookie", setCookieHeader);
   }
 
-  console.log("✅ Acceso permitido:", path);
-  return NextResponse.next();
+  return res;
 }
-
-export const config = {
-  matcher: ["/dashboard/:path*", "/welcome/:path*", "/ventas/:path*", "/citas/:path*", "/login"],
-};
