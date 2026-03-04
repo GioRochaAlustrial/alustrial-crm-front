@@ -27,7 +27,9 @@ console.log("Data:", data);
       return
     }
 localStorage.setItem("token", data.token);
-    window.location.href = "/dashboard"
+   setTimeout(() => {
+  window.location.href = "/dashboard";
+}, 300);
   }
 
   return (
