@@ -20,12 +20,13 @@ export default function LoginPage() {
     })
 
     const data = await res.json().catch(() => ({}))
-
+console.log("Status:", res.status);
+console.log("Data:", data);
     if (!res.ok) {
       setError(data?.error || "Credenciales incorrectas")
       return
     }
-
+localStorage.setItem("token", data.token);
     window.location.href = "/dashboard"
   }
 
