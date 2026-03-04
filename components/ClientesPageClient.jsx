@@ -92,7 +92,7 @@ export default function ClientesPageClient() {
 
       const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 
-      const res = await fetch(`/api/prospectos`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/prospectos`, {
         cache: "no-store",
         credentials: "include",
       });
