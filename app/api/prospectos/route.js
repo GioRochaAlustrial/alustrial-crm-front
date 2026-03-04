@@ -13,7 +13,7 @@ export async function GET() {
     return NextResponse.json({ error: "TOKEN_REQUERIDO" }, { status: 401 })
   }
 
-  const apiRes = await fetch(`${BASE}/prospectos`, {
+  const apiRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/prospectos`, {
     method: "GET",
     headers: {
       cookie: `token=${token}`, // ✅ aquí va el token al backend

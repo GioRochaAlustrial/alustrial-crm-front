@@ -20,7 +20,7 @@ export async function POST(req, { params }) {
 
   const body = await req.json();
 
-  const r = await fetch(`${base}/prospectos/${params.id}/citas`, {
+  const r = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/prospectos/${params.id}/citas`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

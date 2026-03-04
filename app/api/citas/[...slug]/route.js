@@ -6,7 +6,7 @@ const BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/crm";
 function buildApiUrl(req, slugParts = []) {
   const url = new URL(req.url);
   const tail = slugParts.length ? `/${slugParts.join("/")}` : "";
-  return `${BASE}/citas${tail}${url.search}`;
+  return `${process.env.NEXT_PUBLIC_API_URL}/citas${tail}${url.search}`;
 }
 
 async function proxy(req, slugParts) {
