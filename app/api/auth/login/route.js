@@ -52,17 +52,18 @@
 
 //   return res
 // }
+// app/api/auth/login/route.js
 import { NextResponse } from "next/server";
 
 export async function POST(req) {
   const body = await req.json();
 
-  // 🔹 Llamada al backend real (API externa)
+  // 🔹 Llamar al backend
   const apiRes = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
-    credentials: "include", // 👈 incluye cookies del backend si las hay
+    credentials: "include",
   });
 
   const data = await apiRes.json();
@@ -71,37 +72,14 @@ export async function POST(req) {
     return NextResponse.json(data, { status: apiRes.status });
   }
 
-  const { token, usuario } = data;
+  // 🔹 Crear respuesta local
+  const res = NextResponse.json({ ok: true, usuario: data.usuario });
 
-  if (!token) {
-    return NextResponse.json({ error: "LOGIN_SIN_TOKEN" }, { status: 500 });
+  // 🔹 Copiar cookies del backend al frontend (Render a veces las bloquea)
+  const setCookieHeader = apiRes.headers.get("set-cookie");
+  if (setCookieHeader) {
+    res.headers.set("set-cookie", setCookieHeader);
   }
-
-  const res = NextResponse.json({ ok: true, usuario });
-
-  // ✅ Cookie segura y visible para el middleware
-  res.cookies.set("token", token, {
-    httpOnly: true,
-    sameSite: "none",  // 👈 permite uso cross-site (Render usa dominios distintos)
-    secure: true,      // 👈 obligatorio con HTTPS
-    path: "/",
-    maxAge: 60 * 60,   // 1h
-  });
-
-  // ✅ Cookie opcional visible para la UI
-  res.cookies.set("user", JSON.stringify({
-    id: usuario.id,
-    nombre: usuario.nombre,
-    correo: usuario.correo,
-    rol: usuario.rol,
-    departamento: usuario.departamento,
-  }), {
-    httpOnly: false,
-    sameSite: "none",
-    secure: true,
-    path: "/",
-    maxAge: 60 * 60,
-  });
 
   return res;
 }
