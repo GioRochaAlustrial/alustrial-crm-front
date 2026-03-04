@@ -92,7 +92,7 @@ export default function ClientesPageClient() {
 
       const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 
-      const res = await fetch(`${API}/crm/prospectos`, {
+      const res = await fetch(`/api/prospectos`, {
         cache: "no-store",
         credentials: "include",
       });
@@ -258,8 +258,8 @@ export default function ClientesPageClient() {
       const isReagendar = !!citaFor?.next_cita_id;
 
       const url = isReagendar
-        ? `${API}/crm/citas/${citaFor.next_cita_id}/reprogramar`
-        : `${API}/crm/prospectos/${citaFor.id}/citas`;
+        ? `/api/citas/${citaFor.next_cita_id}/reprogramar`
+        : `/api/prospectos/${citaFor.id}/citas`;
 
       const payload = {
         fecha_hora,
@@ -414,7 +414,7 @@ export default function ClientesPageClient() {
         tipo_contacto,
       };
 
-      const res = await fetch(`${API}/crm/prospectos`, {
+      const res = await fetch(`/api/prospectos`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
