@@ -9,7 +9,7 @@ export default function GerenteOperaciones() {
   async function load() {
     setLoading(true)
     try {
-      const res = await fetch("/api/citas/autorizaciones")
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/citas/autorizaciones`)
       if (res.ok) {
         const data = await res.json()
         setItems(data || [])

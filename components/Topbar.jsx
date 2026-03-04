@@ -14,7 +14,7 @@ export default function Topbar() {
 
   useEffect(() => {
     ;(async () => {
-      const res = await fetch("/api/auth/me")
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/me`)
       if (res.ok) {
         const data = await res.json()
         setUsuario(data.usuario)

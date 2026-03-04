@@ -27,7 +27,7 @@ export default function EspecialistaCitasPageClient() {
   }, [me]);
 
   async function loadMe() {
-    const res = await fetch("/api/auth/me", { cache: "no-store" });
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/me`, { cache: "no-store" });
     const data = await res.json().catch(() => ({}));
     if (!res.ok) throw new Error(data?.error || "No auth");
     setMe(data);

@@ -32,7 +32,7 @@ export default function WelcomeClient() {
 
   useEffect(() => {
     (async () => {
-      const r = await fetch("/api/auth/profile", { cache: "no-store" });
+      const r = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/profile`, { cache: "no-store" });
       const data = await safeJson(r);
       if (r.ok) {
         setNombre(data?.nombre || "");
