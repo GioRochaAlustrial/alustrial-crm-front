@@ -1,13 +1,13 @@
 import { NextResponse } from "next/server";
 
-const BASE = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3000/crm";
+const BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/crm";
 
 async function proxy(req, slugParts) {
     const token = req.cookies.get("token")?.value || "";
     const cookieHeader = req.headers.get("cookie") || "";
     const url = new URL(req.url);
     const tail = slugParts.length ? `/${slugParts.join("/")}` : "";
-    const apiUrl = `${BASE}/notificaciones${tail}${url.search}`;
+    const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/notificaciones${tail}${url.search}`;
 
     const method = req.method;
     const isBodyMethod = !["GET", "HEAD"].includes(method);
