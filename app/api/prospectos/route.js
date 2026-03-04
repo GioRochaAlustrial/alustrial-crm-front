@@ -1,27 +1,74 @@
-import { NextResponse } from "next/server"
-import { cookies } from "next/headers"
+// import { NextResponse } from "next/server"
+// import { cookies } from "next/headers"
 
-const BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/crm"
+// const BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/crm"
+
+// export async function GET() {
+//   const token = cookies().get("token")?.value
+
+//   // Debug útil (solo en dev)
+//   // console.log("TOKEN EN NEXT:", Boolean(token))
+
+//   if (!token) {
+//     return NextResponse.json({ error: "TOKEN_REQUERIDO" }, { status: 401 })
+//   }
+
+//   const apiRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/prospectos`, {
+//     method: "GET",
+//     headers: {
+//       cookie: `token=${token}`, // ✅ aquí va el token al backend
+//       Authorization:  `Bearer ${token}`,
+//     },
+//     cache: "no-store",
+//   })
+
+//   const data = await apiRes.json().catch(() => ({}))
+//   return NextResponse.json(data, { status: apiRes.status })
+// }
+import { NextResponse } from "next/server";
+import { cookies as nextCookies } from "next/headers";
+
+const BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/crm";
 
 export async function GET() {
-  const token = cookies().get("token")?.value
+  const cookieStore = nextCookies();
+  const token = cookieStore.get("token")?.value;
 
-  // Debug útil (solo en dev)
-  // console.log("TOKEN EN NEXT:", Boolean(token))
+  console.log("🧠 [API/prospectos] Token presente:", !!token);
 
   if (!token) {
-    return NextResponse.json({ error: "TOKEN_REQUERIDO" }, { status: 401 })
+    console.error("🚫 No hay token en cookies");
+    return NextResponse.json({ error: "TOKEN_REQUERIDO" }, { status: 401 });
   }
 
-  const apiRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/prospectos`, {
-    method: "GET",
-    headers: {
-      cookie: `token=${token}`, // ✅ aquí va el token al backend
-       Authorization:  `Bearer ${token}`,
-    },
-    cache: "no-store",
-  })
+  try {
+    console.log("🌐 Fetching:", `${process.env.NEXT_PUBLIC_API_URL}/prospectos`);
+    const apiRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/prospectos`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      cache: "no-store",
+    });
 
-  const data = await apiRes.json().catch(() => ({}))
-  return NextResponse.json(data, { status: apiRes.status })
+    console.log("📦 Respuesta del backend:", apiRes.status);
+    const text = await apiRes.text();
+    console.log("📨 Raw response:", text);
+
+    let data;
+    try {
+      data = JSON.parse(text);
+    } catch {
+      data = { raw: text };
+    }
+
+    return NextResponse.json(data, { status: apiRes.status });
+  } catch (err) {
+    console.error("💥 Error en /api/prospectos:", err);
+    return NextResponse.json(
+      { error: "ERROR_INTERNO", details: err.message },
+      { status: 500 }
+    );
+  }
 }
