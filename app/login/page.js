@@ -12,21 +12,25 @@ export default function LoginPage() {
     e.preventDefault()
     setError("")
 
-    const res = await fetch("/api/auth/login", {
-      method: "POST",
+    // const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
+    const res = await fetch("/api/auth/login", { 
+    method: "POST",
       headers: { "Content-Type": "application/json" },
-      credentials: "include",
       body: JSON.stringify({ correo, contrasena: password }),
+      credentials: "include", 
     })
 
     const data = await res.json().catch(() => ({}))
-
+console.log("Status:", res.status);
+console.log("Data:", data);
     if (!res.ok) {
       setError(data?.error || "Credenciales incorrectas")
       return
     }
-
-    window.location.href = "/dashboard"
+localStorage.setItem("token", data.token);
+   setTimeout(() => {
+  window.location.href = "/dashboard";
+}, 300);
   }
 
   return (

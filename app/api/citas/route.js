@@ -14,7 +14,7 @@ export async function GET(req) {
   if (tipo) qs.set("tipo", tipo);
   if (estado) qs.set("estado", estado);
 
-  const apiRes = await fetch(`${BASE}/citas?${qs.toString()}`, {
+  const apiRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/citas?${qs.toString()}`, {
     method: "GET",
     headers: { Cookie: `token=${token}` },
   });

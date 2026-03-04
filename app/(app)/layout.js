@@ -9,7 +9,7 @@ export default function AppLayout({ children }) {
 
   useEffect(() => {
     ; (async () => {
-      const res = await fetch("/api/auth/me")
+      const res = await fetch(`/api/auth/me`)
       if (res.ok) {
         const data = await res.json()
         setRol(data.usuario?.rol || "")

@@ -11,7 +11,7 @@ export async function PUT(req, { params }) {
   const body = await req.json().catch(() => ({}));
   const { id } = params;
 
-  const apiRes = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/citas/${id}/reprogramar`, {
+  const apiRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/citas/${id}/reprogramar`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",

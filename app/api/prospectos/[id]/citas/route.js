@@ -15,12 +15,12 @@ export async function POST(req, { params }) {
   const token = cookies().get("token")?.value;
   if (!token) return NextResponse.json({ error: "NO_AUTH" }, { status: 401 });
 
-  const base = process.env.NEXT_PUBLIC_API_BASE_URL; // ej: http://localhost:3000/crm
-  if (!base) return NextResponse.json({ error: "Falta NEXT_PUBLIC_API_BASE_URL" }, { status: 500 });
+  const base = process.env.NEXT_PUBLIC_API_URL; // ej: http://localhost:3000/crm
+  if (!base) return NextResponse.json({ error: "Falta NEXT_PUBLIC_API_URL" }, { status: 500 });
 
   const body = await req.json();
 
-  const r = await fetch(`${base}/prospectos/${params.id}/citas`, {
+  const r = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/prospectos/${params.id}/citas`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

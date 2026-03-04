@@ -1,17 +1,16 @@
 import { NextResponse } from "next/server";
 
 // Backend base (Express) donde está montado /crm
-const BASE = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3000/crm";
+const BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/crm";
 
 function buildApiUrl(req, slugParts = []) {
   const url = new URL(req.url);
   const tail = slugParts.length ? `/${slugParts.join("/")}` : "";
-  return `${BASE}/citas${tail}${url.search}`;
+  return `${process.env.NEXT_PUBLIC_API_URL}/citas${tail}${url.search}`;
 }
 
 async function proxy(req, slugParts) {
   const token = req.cookies.get("token")?.value || "";
-  const cookieHeader = req.headers.get("cookie") || "";
   const apiUrl = buildApiUrl(req, slugParts);
 
   const method = req.method;
@@ -24,8 +23,7 @@ async function proxy(req, slugParts) {
     method,
     headers: {
       ...(contentType ? { "Content-Type": contentType } : {}),
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
-      ...(cookieHeader ? { Cookie: cookieHeader } : {}), // 👈 reenvía TODO
+      Cookie: `token=${token}`,
     },
     body,
   });

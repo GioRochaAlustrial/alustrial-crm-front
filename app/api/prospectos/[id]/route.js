@@ -1,13 +1,13 @@
 import { NextResponse } from "next/server"
 import { cookies } from "next/headers"
 
-const BASE = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3000/crm"
+const BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/crm"
 
 export async function GET() {
   const token = cookies().get("token")?.value
   if (!token) return NextResponse.json({ error: "TOKEN_REQUERIDO" }, { status: 401 })
 
-  const r = await fetch(`${BASE}/prospectos`, {
+  const r = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/prospectos`, {
     method: "GET",
     headers: { cookie: `token=${token}` },
     cache: "no-store",
@@ -21,7 +21,7 @@ export async function PUT(req, { params }) {
   const cookie = req.headers.get("cookie") || ""
   const body = await req.json().catch(() => ({}))
 
-  const r = await fetch(`${BASE}/prospectos/${params.id}`, {
+  const r = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/prospectos/${params.id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",

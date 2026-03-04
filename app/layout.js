@@ -1,5 +1,5 @@
 import "./globals.css";
-
+export const dynamic = "force-dynamic";
 export const metadata = {
   title: "CRM Alustrial",
   icons: {

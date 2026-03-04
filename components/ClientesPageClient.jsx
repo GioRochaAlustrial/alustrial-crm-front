@@ -44,23 +44,31 @@ export default function ClientesPageClient() {
   const [selected, setSelected] = useState(null); // prospecto seleccionado
   const [form, setForm] = useState({}); // solo campos vacíos a llenar
   const [saving, setSaving] = useState(false);
+
   const [citaOpen, setCitaOpen] = useState(false);
   const [citaFor, setCitaFor] = useState(null);
+
   const [citaForm, setCitaForm] = useState({
     fecha: "",     // yyyy-mm-dd
     hora: "",      // HH:mm
     notas: "",
     tipo: "HVAC",  // HVAC | ELECTRICA | CIVIL | ATM/CONTROL
   });
+
   const [comercialOpen, setComercialOpen] = useState(false)
   const [comercialFor, setComercialFor] = useState(null)
+
   const [levantOpen, setLevantOpen] = useState(false)
   const [levantFor, setLevantFor] = useState(null)
+
   const [comercialForm, setComercialForm] = useState({ fecha: "", hora: "", nota: "" })
   const [levantForm, setLevantForm] = useState({ fecha: "", hora: "", tipo: "HVAC", nota: "" })
+
   const [createOpen, setCreateOpen] = useState(false);
+
   const [createError, setCreateError] = useState("");
   const [creating, setCreating] = useState(false);
+
   const [createForm, setCreateForm] = useState({
     empresa: "",
     direccion: "",
@@ -76,13 +84,14 @@ export default function ClientesPageClient() {
   const rol = (user?.rol || "").toUpperCase();
 
   async function load() {
+      console.log('load')
     try {
       setError("");
       setLoading(true);
 
-      const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+      
 
-      const res = await fetch(`${API}/crm/prospectos`, {
+      const res = await fetch(`/api/prospectos`, {
         cache: "no-store",
         credentials: "include",
       });
@@ -102,6 +111,7 @@ export default function ClientesPageClient() {
   }
 
   useEffect(() => {
+    console.log('effect')
     load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -248,8 +258,8 @@ export default function ClientesPageClient() {
       const isReagendar = !!citaFor?.next_cita_id;
 
       const url = isReagendar
-        ? `${API}/crm/citas/${citaFor.next_cita_id}/reprogramar`
-        : `${API}/crm/prospectos/${citaFor.id}/citas`;
+        ? `/api/citas/${citaFor.next_cita_id}/reprogramar`
+        : `/api/prospectos/${citaFor.id}/citas`;
 
       const payload = {
         fecha_hora,
@@ -403,8 +413,8 @@ export default function ClientesPageClient() {
         correo,
         tipo_contacto,
       };
-
-      const res = await fetch(`${API}/crm/prospectos`, {
+console.log('aqui')
+      const res = await fetch(`/api/prospectos`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",

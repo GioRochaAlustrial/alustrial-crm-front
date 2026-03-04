@@ -4,7 +4,7 @@ export async function PUT(req, { params }) {
   const token = req.cookies.get("token")?.value || "";
   const body = await req.json().catch(() => ({}));
 
-  const apiRes = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/citas/${params.id}/estado`, {
+  const apiRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/citas/${params.id}/estado`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
