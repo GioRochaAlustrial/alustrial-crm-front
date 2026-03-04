@@ -86,13 +86,14 @@ export default function ClientesPageClient() {
   const rol = (user?.rol || "").toUpperCase();
 
   async function load() {
+      console.log('load')
     try {
       setError("");
       setLoading(true);
 
-      const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+      
 
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/prospectos`, {
+      const res = await fetch(`/api/prospectos`, {
         cache: "no-store",
         credentials: "include",
       });
@@ -112,6 +113,7 @@ export default function ClientesPageClient() {
   }
 
   useEffect(() => {
+    console.log('effect')
     load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -413,7 +415,7 @@ export default function ClientesPageClient() {
         correo,
         tipo_contacto,
       };
-
+console.log('aqui')
       const res = await fetch(`/api/prospectos`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },

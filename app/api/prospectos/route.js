@@ -31,7 +31,7 @@ import { cookies as nextCookies } from "next/headers";
 const BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/crm";
 
 export async function GET() {
-  const cookieStore = nextCookies();
+  const cookieStore = await nextCookies();
   const token = cookieStore.get("token")?.value;
 
   console.log("🧠 [API/prospectos] Token presente:", !!token);
