@@ -198,7 +198,7 @@ export default function DashboardPage() {
   const [citaMode, setCitaMode] = useState("CREATE");
 
   async function logout() {
-    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/logout`, { method: "POST" });
+    await fetch("/api/auth/logout", { method: "POST" });
     router.push("/login");
   }
 
@@ -207,7 +207,7 @@ export default function DashboardPage() {
     setLoading(true);
 
     try {
-      const r = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/prospectos`, { cache: "no-store" });
+      const r = await fetch("/api/prospectos", { cache: "no-store" });
       const data = await safeJson(r);
 
       if (!r.ok) {
@@ -228,7 +228,7 @@ export default function DashboardPage() {
 
     (async () => {
       try {
-        const r = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/profile`, { cache: "no-store" });
+        const r = await fetch("/api/auth/profile", { cache: "no-store" });
         const data = await safeJson(r);
         if (r.ok) {
           setUsuarioNombre(data?.nombre || "");
@@ -338,7 +338,7 @@ export default function DashboardPage() {
     setError(null);
 
     try {
-      const r = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/prospectos`, {
+      const r = await fetch("/api/prospectos", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),

@@ -146,7 +146,7 @@ export default function Sidebar({ rol = "" }) {
         <button
           className={`flex items-center gap-3 w-full px-4 py-2 rounded-md text-sm ${itemIdle}`}
           onClick={async () => {
-            await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/logout`, { method: "POST" })
+            await fetch("/api/auth/logout", { method: "POST" })
             window.location.href = "/login"
           }}
         >
