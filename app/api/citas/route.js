@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-const BASE = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3000/crm";
+const BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/crm";
 
 export async function GET(req) {
   const token = req.cookies.get("token")?.value || "";

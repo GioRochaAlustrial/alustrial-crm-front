@@ -4,7 +4,7 @@
 //   const body = await req.json()
 
 //   // Llama a tu backend real
-//   const apiRes = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/login`, {
+//   const apiRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
 //     method: "POST",
 //     headers: { "Content-Type": "application/json" },
 //     body: JSON.stringify(body),
@@ -59,7 +59,7 @@ export async function POST(req) {
   const body = await req.json();
 
   // 🔹 Llamar al backend
-  const apiRes = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/login`, {
+  const apiRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),

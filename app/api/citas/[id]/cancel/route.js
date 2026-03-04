@@ -11,8 +11,8 @@ export async function PUT(req, { params }) {
   const token = cookies().get("token")?.value;
   if (!token) return NextResponse.json({ error: "NO_AUTH" }, { status: 401 });
 
-  const base = process.env.NEXT_PUBLIC_API_BASE_URL; // http://localhost:3000/crm
-  if (!base) return NextResponse.json({ error: "Falta NEXT_PUBLIC_API_BASE_URL" }, { status: 500 });
+  const base = process.env.NEXT_PUBLIC_API_URL; // http://localhost:3000/crm
+  if (!base) return NextResponse.json({ error: "Falta NEXT_PUBLIC_API_URL" }, { status: 500 });
 
   const r = await fetch(`${base}/citas/${params.id}/cancel`, {
     method: "PUT",

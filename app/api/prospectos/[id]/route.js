@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 import { cookies } from "next/headers"
 
-const BASE = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3000/crm"
+const BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/crm"
 
 export async function GET() {
   const token = cookies().get("token")?.value

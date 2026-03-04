@@ -5,7 +5,7 @@ export async function POST(req, { params }) {
   const body = await req.json().catch(() => ({}));
   const { id } = params;
 
-  const apiRes = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/citas/prospectos/${id}/citas`, {
+  const apiRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/citas/prospectos/${id}/citas`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 // Backend base (Express) donde está montado /crm
-const BASE = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3000/crm";
+const BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/crm";
 
 function buildApiUrl(req, slugParts = []) {
   const url = new URL(req.url);
