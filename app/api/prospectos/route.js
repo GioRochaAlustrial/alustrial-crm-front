@@ -17,6 +17,7 @@ export async function GET() {
     method: "GET",
     headers: {
       cookie: `token=${token}`, // ✅ aquí va el token al backend
+       Authorization:  `Bearer ${token}`,
     },
     cache: "no-store",
   })
