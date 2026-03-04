@@ -9,8 +9,8 @@ function safeParse(text) {
 export async function PUT(req, { params }) {
   const token = req.cookies.get("token")?.value || "";
   const body = await req.json().catch(() => ({}));
-  const { id } = params;
-
+  // const { id } = params;
+ const { id } = await params;
   const apiRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/citas/${id}/reprogramar`, {
     method: "PUT",
     headers: {

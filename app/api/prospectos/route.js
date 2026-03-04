@@ -72,3 +72,27 @@ export async function GET() {
     );
   }
 }
+export async function POST(req) {
+  const cookieStore = await nextCookies();
+  const token = cookieStore.get("token")?.value;
+
+  if (!token) {
+    return Response.json({ error: "Token no encontrado" }, { status: 401 });
+  }
+
+  const body = await req.json().catch(() => null);
+  if (!body) {
+    return Response.json({ error: "Cuerpo inválido" }, { status: 400 });
+  }
+
+  const apiRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/prospectos`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(body),
+  });
+    const data = await apiRes.json().catch(() => ({}));
+  return Response.json(data, { status: apiRes.status });
+}
