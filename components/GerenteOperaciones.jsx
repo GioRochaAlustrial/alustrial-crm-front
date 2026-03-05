@@ -324,7 +324,7 @@ export default function GerenteOperaciones() {
     const hasData = items.length > 0;
     if (silent || hasData) setRefreshing(true);
     else setLoading(true);
-
+      console.log("/api/citas/autorizaciones")
     try {
       const res = await fetch("/api/citas/autorizaciones", {
         cache: "no-store",
@@ -332,6 +332,7 @@ export default function GerenteOperaciones() {
       });
 
       const data = await res.json().catch(() => ({}));
+      console.log("DATA:", data);
       if (!res.ok) {
         setError(data?.error || `Error ${res.status}`);
         if (!hasData) setItems([]);
