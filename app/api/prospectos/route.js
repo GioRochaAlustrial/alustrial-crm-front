@@ -32,8 +32,8 @@ const BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/crm";
 
 export async function GET() {
   const cookieStore = await nextCookies();
-  const token = cookieStore.get("token")?.value;
-
+  // const token = cookieStore.get("token")?.value;
+const token = cookieStore.get("token")?.value
   console.log("🧠 [API/prospectos] Token presente:", !!token);
 
   if (!token) {
