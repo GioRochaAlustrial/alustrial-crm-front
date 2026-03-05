@@ -365,7 +365,7 @@ export default function GerenteOperaciones() {
     if (!ok) return;
 
     try {
-      const res = await fetch(`/api/citas/${id}/autorizar`, { method: "PUT" });
+      const res = await fetch(`/api/citas/${id}/autorizaciones`, { method: "PUT" });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
         alert(data?.error || "Error al autorizar la cita");
@@ -387,7 +387,7 @@ export default function GerenteOperaciones() {
       const res = await fetch(`/api/citas/${id}/rechazar`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ motivo }),
+        body: JSON.stringify({ motivo:motivo ,accion:'RECHAZAR'}),
       });
 
       if (!res.ok) {
@@ -557,7 +557,7 @@ export default function GerenteOperaciones() {
                         <div className="flex items-center justify-center gap-2">
                           <button
                             type="button"
-                            title="Autorizar"
+                            title={"Autorizar"+it.id}
                             aria-label="Autorizar"
                             onClick={() => doAutorizar(it.id)}
                             className="inline-flex h-9 w-9 items-center justify-center rounded-md bg-emerald-600 text-white hover:bg-emerald-700"

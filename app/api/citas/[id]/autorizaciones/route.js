@@ -2,16 +2,25 @@ import { NextResponse } from "next/server"
 
 export async function PUT(req, { params }) {
   const { id } = await params
-console.log("ID:", id)
+console.log("ID autorizaciones:", id)
+console.log(req.text())
   const token = req.cookies.get("token")?.value || ""
+let body = {}
 
-  const r = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/citas/${id}/autorizacion`, {
+try {
+  body = await req.json()
+} catch {
+  body = {}
+}
+  const r = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/citas/${id}/autorizaciones`, {
     method: "PUT",
     headers: {
       Cookie: `token=${token}`,
       "Content-Type": "application/json",
     },
-    body: await req.text(),
+    body:  JSON.stringify({
+    accion: "AUTORIZAR"
+  })
   })
 
   const data = await r.json().catch(() => ({}))
